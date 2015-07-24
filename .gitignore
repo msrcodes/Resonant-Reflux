@@ -1,0 +1,8 @@
+/.gradle
+/client
+/eclipse
+/gradle
+/out
+*.iws
+*.ipr
+*.iml
