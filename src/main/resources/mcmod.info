@@ -1,0 +1,16 @@
+[
+{
+  "modid": "resonantreflux",
+  "name": "Resonant Reflux",
+  "description": "Providing unique, powerful, tools to the game.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["GustoniaEagle"],
+  "credits": "The CoFH Team, for making the RF API.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
