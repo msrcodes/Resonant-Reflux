@@ -4,10 +4,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Implement this interface on Tile Entities which should handle energy, generally storing it in one or more internal {@link IEnergyStorage} objects.
- * <p/>
+ * <p>
  * A reference implementation is provided {@link TileEnergyHandler}.
  *
  * @author King Lemming
+ *
  */
 public interface IEnergyHandler extends IEnergyProvider, IEnergyReceiver
 {
@@ -28,14 +29,16 @@ public interface IEnergyHandler extends IEnergyProvider, IEnergyReceiver
     /**
      * Remove energy from an IEnergyProvider, internal distribution is left entirely to the IEnergyProvider.
      *
-     * @param from       Orientation the energy is extracted from.
-     * @param maxExtract Maximum amount of energy to extract.
-     * @param simulate   If TRUE, the extraction will only be simulated.
+     * @param from
+     *            Orientation the energy is extracted from.
+     * @param maxExtract
+     *            Maximum amount of energy to extract.
+     * @param simulate
+     *            If TRUE, the extraction will only be simulated.
      * @return Amount of energy that was (or would have been, if simulated) extracted.
      */
     @Override
     int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate);
-
 
     /**
      * Returns the amount of energy currently stored.

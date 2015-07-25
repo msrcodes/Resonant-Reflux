@@ -24,8 +24,7 @@ public class TileEntityFluxCrystallizer extends TileEntityRR
     @Override
     public void updateEntity()
     {
-        System.out.println(storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + " RF");
-        super.markDirty();
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * Reference implementation of {@link IEnergyStorage}. Use/extend this or implement your own.
  *
  * @author King Lemming
+ *
  */
 public class EnergyStorage implements IEnergyStorage
 {

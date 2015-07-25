@@ -7,9 +7,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 /**
  * This class was created by GustoniaEagle.
@@ -21,10 +19,9 @@ import net.minecraft.world.World;
  * <p/>
  * File created @ 24/07/2015, 17:31 GMT.
  */
-public class BlockContainerRR extends BlockContainer
+public abstract class BlockContainerRR extends BlockContainer
 {
     String unlocalizedName;
-    TileEntity tileEntity;
     Boolean multitexture = false;
 
     @SideOnly(Side.CLIENT)
@@ -36,7 +33,7 @@ public class BlockContainerRR extends BlockContainer
     @SideOnly(Side.CLIENT)
     private IIcon textureBottom;
 
-    public BlockContainerRR(String unlocalizedName, Material material, float hardness, TileEntity tileEntity, boolean multitexture)
+    public BlockContainerRR(String unlocalizedName, Material material, float hardness, boolean multitexture)
     {
         super(material);
         this.setCreativeTab(CreativeTabs.tabRedstone);
@@ -44,7 +41,6 @@ public class BlockContainerRR extends BlockContainer
         this.setBlockName(unlocalizedName);
         this.setBlockTextureName(unlocalizedName);
         this.unlocalizedName = unlocalizedName;
-        this.tileEntity = tileEntity;
         this.multitexture = multitexture;
     }
 
@@ -85,9 +81,4 @@ public class BlockContainerRR extends BlockContainer
         }
     }
 
-    @Override
-    public TileEntity createNewTileEntity(World world, int meta)
-    {
-        return tileEntity;
-    }
 }
