@@ -2,6 +2,7 @@ package com.eagle.resonantreflux.blocks.function;
 
 import cofh.api.block.IDismantleable;
 import com.eagle.resonantreflux.Dictionary;
+import com.eagle.resonantreflux.ResonantReflux;
 import com.eagle.resonantreflux.blocks.core.BlockContainerRR;
 import com.eagle.resonantreflux.tileentities.function.TileEntityFluxCrystallizationChamber;
 import net.minecraft.block.material.Material;
@@ -34,6 +35,13 @@ public class BlockFluxCrystallizationChamber extends BlockContainerRR implements
     public TileEntity createNewTileEntity(World world, int meta)
     {
         return new TileEntityFluxCrystallizationChamber();
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float sideX, float sideY, float sideZ)
+    {
+        player.openGui(ResonantReflux.instance, Dictionary.Gui.CRYSTAL_CHAMBER.ordinal(), world, x, y, z);
+        return true;
     }
 
     @Override
