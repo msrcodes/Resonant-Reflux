@@ -18,12 +18,12 @@ import net.minecraft.nbt.NBTTagList;
  * <p/>
  * File created @ 24/07/2015, 19:45 GMT.
  */
-public class TileEntityFluxCrystallizer extends TileEntityRR implements ISidedInventory
+public class TileEntityFluxCrystallizationChamber extends TileEntityRR implements ISidedInventory
 {
     private ItemStack[] inv = new ItemStack[2];
     private int progress;
 
-    public TileEntityFluxCrystallizer()
+    public TileEntityFluxCrystallizationChamber()
     {
         super(40000000, 2048);
     }
@@ -164,7 +164,7 @@ public class TileEntityFluxCrystallizer extends TileEntityRR implements ISidedIn
     @Override
     public String getInventoryName()
     {
-        return "Flux Crystallizer";
+        return "Flux Crystallization Chamber";
     }
 
     @Override

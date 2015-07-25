@@ -3,7 +3,7 @@ package com.eagle.resonantreflux.blocks.function;
 import cofh.api.block.IDismantleable;
 import com.eagle.resonantreflux.Dictionary;
 import com.eagle.resonantreflux.blocks.core.BlockContainerRR;
-import com.eagle.resonantreflux.tileentities.function.TileEntityFluxCrystallizer;
+import com.eagle.resonantreflux.tileentities.function.TileEntityFluxCrystallizationChamber;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,17 +23,17 @@ import java.util.ArrayList;
  * <p/>
  * File created @ 24/07/2015, 17:21 GMT.
  */
-public class BlockFluxCrystallizer extends BlockContainerRR implements IDismantleable
+public class BlockFluxCrystallizationChamber extends BlockContainerRR implements IDismantleable
 {
-    public BlockFluxCrystallizer()
+    public BlockFluxCrystallizationChamber()
     {
-        super(Dictionary.UNLOCALIZED_FLUXCRYSTALLIZER, Material.iron, 12.0F, true);
+        super(Dictionary.UNLOCALIZED_CRYSTALCHAMBER, Material.iron, 12.0F, true);
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta)
     {
-        return new TileEntityFluxCrystallizer();
+        return new TileEntityFluxCrystallizationChamber();
     }
 
     @Override
