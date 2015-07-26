@@ -40,7 +40,10 @@ public class BlockFluxCrystallizationChamber extends BlockContainerRR implements
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float sideX, float sideY, float sideZ)
     {
-        player.openGui(ResonantReflux.instance, Dictionary.Gui.CRYSTAL_CHAMBER.ordinal(), world, x, y, z);
+        if (!player.isSneaking())
+        {
+            player.openGui(ResonantReflux.instance, Dictionary.Gui.CRYSTAL_CHAMBER.ordinal(), world, x, y, z);
+        }
         return true;
     }
 

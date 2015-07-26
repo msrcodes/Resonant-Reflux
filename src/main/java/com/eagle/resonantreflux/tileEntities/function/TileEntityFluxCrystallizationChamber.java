@@ -1,6 +1,9 @@
 package com.eagle.resonantreflux.tileentities.function;
 
+import com.eagle.resonantreflux.networking.MessageProgress;
+import com.eagle.resonantreflux.networking.PacketHandler;
 import com.eagle.resonantreflux.tileentities.core.TileEntityRR;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -37,12 +40,17 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
             return;
         }
 
-        if (progress < 40000000)
+        if (progress < 40000000 && canFunction())
         {
             storage.modifyEnergyStored(-2000);
             progress += 2000;
+
+            if (worldObj.getWorldTime() % 20 == 0)
+            {
+                PacketHandler.INSTANCE.sendToAllAround(new MessageProgress(xCoord, yCoord, zCoord, progress), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 64));
+            }
         }
-        else
+        else if (progress >= 40000000 && canFunction())
         {
             if (getStackInSlot(1) == null)
             {
@@ -51,11 +59,18 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
             }
             else
             {
-                getStackInSlot(1).stackSize += 64;
+                getStackInSlot(1).stackSize++;
+                progress = 0;
             }
         }
 
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    private boolean canFunction()
+    {
+        return storage.getEnergyStored() >= 2000 &&
+                (getStackInSlot(1) == null || getStackInSlot(1).stackSize < getInventoryStackLimit());
     }
 
     @Override
@@ -102,6 +117,11 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     public int getProgress()
     {
         return progress;
+    }
+
+    public void setProgress(int progress)
+    {
+        this.progress = progress;
     }
 
     @Override
@@ -223,7 +243,6 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
     {
-        //Booster goes in slot 0, output comes from slot 1.
         switch (side)
         {
             case 0:

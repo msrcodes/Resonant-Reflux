@@ -27,8 +27,8 @@ public class ContainerFluxCrystallizationChamber extends Container
         this.tileEntity = fluxCrystallizationChamber;
         this.inventoryPlayer = inventoryPlayer;
 
-        addSlotToContainer(new Slot(tileEntity, 0, 134, 57));
-        addSlotToContainer(new Slot(tileEntity, 1, 134, 17));
+        addSlotToContainer(new Slot(tileEntity, 0, 147, 56));
+        addSlotToContainer(new Slot(tileEntity, 1, 147, 13));
         addPlayerInventory(8, 84);
     }
 
@@ -51,7 +51,8 @@ public class ContainerFluxCrystallizationChamber extends Container
 
             if (slot < tileEntity.getSizeInventory())
             {
-                if (!this.mergeItemStack(stackInSlot, tileEntity.getSizeInventory(), 36+tileEntity.getSizeInventory(), true))
+                if (!this.mergeItemStack(stackInSlot, tileEntity.getSizeInventory(),
+                        36 + tileEntity.getSizeInventory(), true))
                 {
                     return null;
                 }
