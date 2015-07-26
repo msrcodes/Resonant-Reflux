@@ -21,41 +21,48 @@ import net.minecraft.nbt.NBTTagList;
 public class TileEntityFluxCrystallizationChamber extends TileEntityRR implements ISidedInventory
 {
     private ItemStack[] inv = new ItemStack[2];
-    public int progress;
-    public int progressPercentage;
+    private int progress;
 
     public TileEntityFluxCrystallizationChamber()
     {
         super(40000000, 2048);
+        progress = 0;
     }
 
     @Override
     public void updateEntity()
     {
+        if (worldObj.isRemote)
         {
-            if (progressPercentage != 100)
+            return;
+        }
+
+        if (progress < 40000000)
+        {
+            storage.modifyEnergyStored(-2000);
+            progress += 2000;
+        }
+        else
+        {
+            if (getStackInSlot(1) == null)
             {
-                storage.modifyEnergyStored(-2000);
-                progress += 20000;
-                progressPercentage = (int)((progress * 100.0f) / 40000000);
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                setInventorySlotContents(1, new ItemStack(Items.diamond).copy());
+                progress = 0;
             }
             else
             {
-                progress = 0;
-                progressPercentage = 0;
-                setInventorySlotContents(1, new ItemStack(Items.diamond));
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                getStackInSlot(1).stackSize += 64;
             }
         }
+
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tagCompound)
     {
         super.readFromNBT(tagCompound);
-        this.progress = tagCompound.getInteger("Progress");
-        this.progressPercentage = tagCompound.getInteger("ProgressPercentage");
+        progress = tagCompound.getInteger("Progress");
         NBTTagList nbttaglist = tagCompound.getTagList("Items", 10);
         this.inv = new ItemStack[this.getSizeInventory()];
 
@@ -76,7 +83,6 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     {
         super.writeToNBT(tagCompound);
         tagCompound.setInteger("Progress", progress);
-        tagCompound.setInteger("ProgressPercentage", progressPercentage);
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.inv.length; ++i)
@@ -91,6 +97,11 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
         }
 
         tagCompound.setTag("Items", nbttaglist);
+    }
+
+    public int getProgress()
+    {
+        return progress;
     }
 
     @Override
@@ -194,13 +205,13 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     @Override
     public void openInventory()
     {
-
+        markDirty();
     }
 
     @Override
     public void closeInventory()
     {
-
+        markDirty();
     }
 
     @Override
