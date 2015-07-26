@@ -3,8 +3,10 @@ package com.eagle.resonantreflux.container;
 import com.eagle.resonantreflux.tileentities.function.TileEntityFluxCrystallizationChamber;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -27,8 +29,25 @@ public class ContainerFluxCrystallizationChamber extends Container
         this.tileEntity = fluxCrystallizationChamber;
         this.inventoryPlayer = inventoryPlayer;
 
-        addSlotToContainer(new Slot(tileEntity, 0, 147, 56));
-        addSlotToContainer(new Slot(tileEntity, 1, 147, 13));
+        addSlotToContainer(new Slot(tileEntity, 0, 147, 56)
+        {
+            @Override
+            public boolean isItemValid(ItemStack stack)
+            {
+                return stack != null && stack.getItem() != null &&
+                        stack.getItem() == Item.getItemFromBlock(Blocks.dirt);
+            }
+        });
+
+        addSlotToContainer(new Slot(tileEntity, 1, 147, 13)
+        {
+            @Override
+            public boolean isItemValid(ItemStack stack)
+            {
+                return false;
+            }
+        });
+
         addPlayerInventory(8, 84);
     }
 
@@ -38,46 +57,9 @@ public class ContainerFluxCrystallizationChamber extends Container
         return true;
     }
 
-    @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slot)
     {
-        ItemStack stack = null;
-        Slot slotObject = (Slot) inventorySlots.get(slot);
-
-        if (slotObject != null && slotObject.getHasStack())
-        {
-            ItemStack stackInSlot = slotObject.getStack();
-            stack = stackInSlot.copy();
-
-            if (slot < tileEntity.getSizeInventory())
-            {
-                if (!this.mergeItemStack(stackInSlot, tileEntity.getSizeInventory(),
-                        36 + tileEntity.getSizeInventory(), true))
-                {
-                    return null;
-                }
-            }
-            else if (!this.mergeItemStack(stackInSlot, 0, tileEntity.getSizeInventory(), false))
-            {
-                return null;
-            }
-
-            if (stackInSlot.stackSize == 0)
-            {
-                slotObject.putStack(null);
-            }
-            else
-            {
-                slotObject.onSlotChanged();
-            }
-
-            if (stackInSlot.stackSize == stack.stackSize)
-            {
-                return null;
-            }
-            slotObject.onPickupFromSlot(player, stackInSlot);
-        }
-        return stack;
+        return null;
     }
 
     protected void addPlayerInventory(int x, int y)

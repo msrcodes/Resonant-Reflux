@@ -5,8 +5,10 @@ import com.eagle.resonantreflux.networking.PacketHandler;
 import com.eagle.resonantreflux.tileentities.core.TileEntityRR;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -237,7 +239,7 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack)
     {
-        return true;
+        return slot == 0 && itemStack != null && itemStack.getItem() == Item.getItemFromBlock(Blocks.dirt);
     }
 
     @Override
