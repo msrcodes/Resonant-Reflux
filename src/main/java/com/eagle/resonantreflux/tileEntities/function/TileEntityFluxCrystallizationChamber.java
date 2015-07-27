@@ -24,12 +24,13 @@ import net.minecraft.nbt.NBTTagList;
 public class TileEntityFluxCrystallizationChamber extends TileEntityRR implements ISidedInventory
 {
     private ItemStack[] inv = new ItemStack[2];
-    private int progress;
+    private int progress, multiplier, multiplierDuration;
 
     public TileEntityFluxCrystallizationChamber()
     {
         super(40000000, 2048);
         progress = 0;
+        multiplier = 1;
     }
 
     @Override
@@ -43,11 +44,21 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
         if (progress < 40000000 && canFunction())
         {
             storage.modifyEnergyStored(-2000);
-            progress += 2000;
+            progress += 2000 * multiplier;
+
+            if (multiplier > 1 && multiplierDuration > 0)
+            {
+                multiplierDuration--;
+            }
+            else
+            {
+                setMultiplier(1);
+                consumeMultiplier();
+            }
 
             if (worldObj.getWorldTime() % 20 == 0)
             {
-                PacketHandler.INSTANCE.sendToAllAround(new MessageProgress(xCoord, yCoord, zCoord, progress), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 64));
+                PacketHandler.INSTANCE.sendToAllAround(new MessageProgress(xCoord, yCoord, zCoord, progress, multiplier, multiplierDuration), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 64));
             }
         }
         else if (progress >= 40000000 && canFunction())
@@ -73,11 +84,55 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
                 (getStackInSlot(1) == null || getStackInSlot(1).stackSize < getInventoryStackLimit());
     }
 
+    private void calculateMultiplier()
+    {
+        if (this.getStackInSlot(0) == null)
+        {
+            setMultiplier(1);
+            setMultiplierDuration(0);
+        }
+        if (this.getStackInSlot(0).getItem() == ItemRegistry.scrap)
+        {
+            setMultiplier(2);
+            setMultiplierDuration(20);
+        }
+        else if (this.getStackInSlot(0).getItem() == ItemRegistry.scrapBag)
+        {
+            setMultiplier(18);
+            setMultiplierDuration(180);
+        }
+    }
+
+    private void consumeMultiplier()
+    {
+        if (this.getStackInSlot(0) == null)
+        {
+            return;
+        }
+
+        if (multiplierDuration == 0)
+        {
+            calculateMultiplier();
+
+            if (this.getStackInSlot(0).stackSize >= 2)
+            {
+                this.getStackInSlot(0).stackSize--;
+            }
+            else if (this.getStackInSlot(0).stackSize == 1)
+            {
+                this.setInventorySlotContents(0, null);
+            }
+        }
+
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tagCompound)
     {
         super.readFromNBT(tagCompound);
         progress = tagCompound.getInteger("Progress");
+        multiplier = tagCompound.getInteger("Multiplier");
+        multiplierDuration = tagCompound.getInteger("Multiplier_Duration");
         NBTTagList nbttaglist = tagCompound.getTagList("Items", 10);
         this.inv = new ItemStack[this.getSizeInventory()];
 
@@ -98,6 +153,8 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     {
         super.writeToNBT(tagCompound);
         tagCompound.setInteger("Progress", progress);
+        tagCompound.setInteger("Multiplier", multiplier);
+        tagCompound.setInteger("Multiplier_Duration", multiplierDuration);
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.inv.length; ++i)
@@ -122,6 +179,26 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     public void setProgress(int progress)
     {
         this.progress = progress;
+    }
+
+    public int getMultiplier()
+    {
+        return multiplier;
+    }
+
+    public void setMultiplier(int multiplier)
+    {
+        this.multiplier = multiplier;
+    }
+
+    public int getMultiplierDuration()
+    {
+        return multiplierDuration;
+    }
+
+    public void setMultiplierDuration(int multiplierDuration)
+    {
+        this.multiplierDuration = multiplierDuration;
     }
 
     @Override

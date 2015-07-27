@@ -20,19 +20,21 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class MessageProgress implements IMessage, IMessageHandler<MessageProgress, IMessage>
 {
-    public int x, y, z, progress;
+    public int x, y, z, progress, multiplier, multiplierDuration;
 
     public MessageProgress()
     {
 
     }
 
-    public MessageProgress(int x, int y, int z, int progress)
+    public MessageProgress(int x, int y, int z, int progress, int multiplier, int multiplierDuration)
     {
         this.x = x;
         this.y = y;
         this.z = z;
         this.progress = progress;
+        this.multiplier = multiplier;
+        this.multiplierDuration = multiplierDuration;
     }
 
     @Override
@@ -42,6 +44,8 @@ public class MessageProgress implements IMessage, IMessageHandler<MessageProgres
         y = buf.readInt();
         z = buf.readInt();
         progress = buf.readInt();
+        multiplier = buf.readInt();
+        multiplierDuration = buf.readInt();
     }
 
     @Override
@@ -51,6 +55,8 @@ public class MessageProgress implements IMessage, IMessageHandler<MessageProgres
         buf.writeInt(y);
         buf.writeInt(z);
         buf.writeInt(progress);
+        buf.writeInt(multiplier);
+        buf.writeInt(multiplierDuration);
     }
 
     @Override
@@ -62,6 +68,8 @@ public class MessageProgress implements IMessage, IMessageHandler<MessageProgres
         if (tileEntity instanceof TileEntityFluxCrystallizationChamber)
         {
             ((TileEntityFluxCrystallizationChamber) tileEntity).setProgress(message.progress);
+            ((TileEntityFluxCrystallizationChamber) tileEntity).setMultiplier(message.multiplier);
+            ((TileEntityFluxCrystallizationChamber) tileEntity).setMultiplierDuration(message.multiplierDuration);
         }
 
         return null;
