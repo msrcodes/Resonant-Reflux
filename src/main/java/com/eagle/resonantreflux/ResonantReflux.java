@@ -3,6 +3,8 @@ package com.eagle.resonantreflux;
 import com.eagle.resonantreflux.gui.GuiHandler;
 import com.eagle.resonantreflux.networking.PacketHandler;
 import com.eagle.resonantreflux.registry.BlockRegistry;
+import com.eagle.resonantreflux.registry.ItemRegistry;
+import com.eagle.resonantreflux.registry.RecipeRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -19,6 +21,8 @@ public class ResonantReflux
     public void preInit(FMLPreInitializationEvent event)
     {
         BlockRegistry.load();
+        ItemRegistry.load();
+
     }
 
     @EventHandler
@@ -26,5 +30,6 @@ public class ResonantReflux
     {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         PacketHandler.init();
+        RecipeRegistry.load();
     }
 }

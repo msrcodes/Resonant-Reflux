@@ -3,10 +3,8 @@ package com.eagle.resonantreflux.container;
 import com.eagle.resonantreflux.tileentities.function.TileEntityFluxCrystallizationChamber;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -35,7 +33,7 @@ public class ContainerFluxCrystallizationChamber extends Container
             public boolean isItemValid(ItemStack stack)
             {
                 return stack != null && stack.getItem() != null &&
-                        stack.getItem() == Item.getItemFromBlock(Blocks.dirt);
+                        tileEntity.isItemValidForSlot(0, stack);
             }
         });
 

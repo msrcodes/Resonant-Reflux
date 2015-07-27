@@ -1,1 +1,7 @@
+#Blocks
 tile.fluxCrystalChamber.name=§3Flux Crystallization Chamber
+
+#Items
+item.fluxCrystal.name=§3Crystallized Flux
+item.scrapBag.name=Bag of Scrap
+item.scrap.name=Scrap
