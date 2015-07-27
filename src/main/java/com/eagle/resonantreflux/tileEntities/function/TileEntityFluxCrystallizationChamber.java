@@ -56,7 +56,7 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
                 consumeMultiplier();
             }
 
-            if (worldObj.getWorldTime() % 20 == 0)
+            if (worldObj.getWorldTime() % 20 == 0 || multiplierDuration > 0)
             {
                 PacketHandler.INSTANCE.sendToAllAround(new MessageProgress(xCoord, yCoord, zCoord, progress, multiplier, multiplierDuration), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 64));
             }
@@ -99,7 +99,7 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
         else if (this.getStackInSlot(0).getItem() == ItemRegistry.scrapBag)
         {
             setMultiplier(18);
-            setMultiplierDuration(180);
+            setMultiplierDuration(20);
         }
     }
 

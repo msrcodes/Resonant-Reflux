@@ -36,8 +36,12 @@ public class GuiFluxCrystallizationChamber extends GuiContainer
     {
         fontRendererObj.drawString("Crystallization Chamber", 8, 6, 4210752);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
-        fontRendererObj.drawString("§eProgress: " + Integer.toString(getProgressAsPercentage()) + "%", 30, 24, 4210752);
-        fontRendererObj.drawString("§eMultiplier: " + tileEntity.getMultiplier() + "x", 30, 38, 4210752);
+        fontRendererObj.drawString("§eProgress: " + Integer.toString(getProgressAsPercentage()) + "%", 30, 25, 4210752);
+        fontRendererObj.drawString("§eMultiplier: " + tileEntity.getMultiplier() + "x", 30, 39, 4210752);
+        if (tileEntity.getMultiplierDuration() != 0)
+        {
+            fontRendererObj.drawString("§eDuration: " + tileEntity.getMultiplierDuration() + " ticks", 30, 53, 4210752);
+        }
     }
 
     private int getProgressAsPercentage()
