@@ -1,5 +1,7 @@
 package com.eagle.resonantreflux.registry;
 
+import com.eagle.resonantreflux.integration.ItemStealer;
+import com.eagle.resonantreflux.integration.ModChecker;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -34,6 +36,35 @@ public class RecipeRegistry
         GameRegistry.addRecipe(scrap);
 
         loadFluxCrystalRecipes();
+        loadDynamicRecipes();
+    }
+
+    private static void loadDynamicRecipes()
+    {
+        if (ModChecker.teLoaded && ModChecker.tfLoaded && ModChecker.eioLoaded)
+        {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockRegistry.blockFluxCrystallizer), "ESE", "SCS", "KFK", 'C', ItemStealer.resonantEnergyCell, 'E', "ingotEnderium", 'S', "gearPlatinum", 'K', ItemStealer.octadicCapacitor, 'F', ItemStealer.frank));
+        }
+        else if (ModChecker.teLoaded && ModChecker.tfLoaded && !ModChecker.eioLoaded)
+        {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockRegistry.blockFluxCrystallizer), "ESE", "SCS", "KFK", 'C', ItemStealer.resonantEnergyCell, 'E', "ingotEnderium", 'S', "gearPlatinum", 'K', ItemStealer.receptionCoil, 'F', "dustPyrotheum"));
+        }
+        else if (!ModChecker.teLoaded && ModChecker.tfLoaded && ModChecker.eioLoaded)
+        {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockRegistry.blockFluxCrystallizer), "ESE", "SCS", "KFK", 'C', ItemStealer.capacitorBank, 'E', "ingotEnderium", 'S', "gearPlatinum", 'K', ItemStealer.octadicCapacitor, 'F', ItemStealer.frank));
+        }
+        else if (!ModChecker.teLoaded && ModChecker.tfLoaded && !ModChecker.eioLoaded)
+        {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockRegistry.blockFluxCrystallizer), "ESE", "SCS", "KSK", 'C', "blockEnderium", 'E', "ingotEnderium", 'S', "gearPlatinum", 'K', "dustPyrotheum"));
+        }
+        else if (!ModChecker.teLoaded && !ModChecker.tfLoaded && ModChecker.eioLoaded)
+        {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockRegistry.blockFluxCrystallizer), "ESE", "ECE", "KFK", 'C', ItemStealer.capacitorBank, 'E', "ingotSoularium", 'S', "itemEnderCrystal", 'K', ItemStealer.octadicCapacitor, 'F', ItemStealer.frank));
+        }
+        else if (!ModChecker.teLoaded && !ModChecker.tfLoaded && !ModChecker.eioLoaded)
+        {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockRegistry.blockFluxCrystallizer), "RDR", "IEI", "EDE", 'R', "dustRedstone", 'D', "gemDiamond", 'I', "blockIron", 'E', "gemEmerald"));
+        }
     }
 
     private static void loadFluxCrystalRecipes()
