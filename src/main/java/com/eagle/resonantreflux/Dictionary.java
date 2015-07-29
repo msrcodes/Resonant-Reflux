@@ -22,7 +22,7 @@ public class Dictionary
     public static final String UNLOCALIZED_SCRAP = "scrap";
     public static final String UNLOCALIZED_SCRAPBAG = "scrapBag";
     public static final ResourceLocation GUI_CRYSTALCHAMBER =
-            new ResourceLocation(MOD_ID, "textures/gui/fluxCrystalChamber.png");
+            new ResourceLocation(MOD_ID.toLowerCase(), "textures/gui/fluxCrystalChamber.png");
 
     public enum Gui
     {

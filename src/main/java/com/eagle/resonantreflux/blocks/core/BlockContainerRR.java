@@ -25,13 +25,7 @@ public abstract class BlockContainerRR extends BlockContainer
     Boolean multitexture = false;
 
     @SideOnly(Side.CLIENT)
-    private IIcon textureTop;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon textureSides;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon textureBottom;
+    private IIcon back, bottom, frontOff, frontOn, left, right, top;
 
     public BlockContainerRR(String unlocalizedName, Material material, float hardness, boolean multitexture)
     {
@@ -50,9 +44,13 @@ public abstract class BlockContainerRR extends BlockContainer
     {
         if (multitexture)
         {
-            this.textureTop = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "Top");
-            this.textureSides = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "Side");
-            this.textureBottom = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "Bottom");
+            this.back = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "/" + "back");
+            this.bottom = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "/" + "bottom");
+            this.frontOff = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "/" + "frontOff");
+            this.frontOn = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "/" + "frontOn");
+            this.left = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "/" + "left");
+            this.right = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "/" + "right");
+            this.top = register.registerIcon(Dictionary.MOD_ID + ":" + unlocalizedName + "/" + "top");
         }
         else
         {
@@ -68,11 +66,19 @@ public abstract class BlockContainerRR extends BlockContainer
             switch (side)
             {
                 case 0:
-                    return this.textureBottom;
+                    return this.bottom;
                 case 1:
-                    return this.textureTop;
+                    return this.top;
+                case 2:
+                    return this.back;
+                case 3:
+                    return this.frontOn;
+                case 4:
+                    return this.right;
+                case 5:
+                    return this.left;
                 default:
-                    return this.textureSides;
+                    return this.bottom;
             }
         }
         else
