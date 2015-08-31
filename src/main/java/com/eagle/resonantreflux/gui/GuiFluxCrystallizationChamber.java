@@ -10,6 +10,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class was created by GustoniaEagle.
  * It is distributed under a part of the Resonant Reflux mod.
@@ -24,6 +27,7 @@ import org.lwjgl.opengl.GL11;
 public class GuiFluxCrystallizationChamber extends GuiContainer
 {
     private TileEntityFluxCrystallizationChamber tileEntity;
+    private float mouseX, mouseY;
 
     public GuiFluxCrystallizationChamber(InventoryPlayer inventoryPlayer, TileEntityFluxCrystallizationChamber tileEntity)
     {
@@ -31,14 +35,21 @@ public class GuiFluxCrystallizationChamber extends GuiContainer
         this.tileEntity = tileEntity;
     }
 
+    public void drawScreen(int par1, int par2, float par3)
+    {
+        this.mouseX = (float) par1;
+        this.mouseY = (float) par2;
+        super.drawScreen(par1, par2, par3);
+    }
+
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y)
     {
-        drawGuiPowerBar();
         fontRendererObj.drawString("Crystallization Chamber", 8, 6, 4210752);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
         fontRendererObj.drawString("§eProgress: " + Integer.toString(getProgressAsPercentage()) + "%", 30, 25, 4210752);
         fontRendererObj.drawString("§eMultiplier: " + tileEntity.getMultiplier() + "x", 30, 39, 4210752);
+        drawGuiPowerBar();
         if (tileEntity.getMultiplierDuration() != 0)
         {
             fontRendererObj.drawString("§eDuration: " + tileEntity.getMultiplierDuration() + " ticks", 30, 53, 4210752);
@@ -62,15 +73,26 @@ public class GuiFluxCrystallizationChamber extends GuiContainer
 
     private void drawGuiPowerBar()
     {
+        int x2 = (width - xSize) / 2;
+        int y2 = (height - ySize) / 2;
+
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(Dictionary.GUI_CRYSTALCHAMBER);
-        int x2 = 0;
-        int y2 = 0;
         int powerStored = tileEntity.getPowerStored();
         int maxPowerStored = tileEntity.getMaxPowerStored();
         float powerPercentage = (float) powerStored / maxPowerStored;
         float barHeight = powerPercentage * 40;
-        drawTexturedModalRect(x2 + 10, y2 + 63 - Math.round(barHeight), 176, 16, 12, Math.round(barHeight));
+        drawTexturedModalRect(10, 63 - Math.round(barHeight), 176, 16, 12, Math.round(barHeight));
+
+        if (mouseX > 8 + x2 && mouseX < 23 + x2)
+        {
+            if (mouseY > 21 + y2 && mouseY < 64 + y2)
+            {
+                List list = new ArrayList();
+                list.add(tileEntity.getPowerStored() + " / " + tileEntity.getMaxPowerStored() + " RF");
+                this.drawHoveringText(list, (int) mouseX - x2, (int) mouseY - y2, fontRendererObj);
+            }
+        }
     }
 
 }
