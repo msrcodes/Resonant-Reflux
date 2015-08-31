@@ -28,7 +28,7 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
 
     public TileEntityFluxCrystallizationChamber()
     {
-        super(40000000, 2048);
+        super(40000000, 32000);
         progress = 0;
         multiplier = 1;
     }
