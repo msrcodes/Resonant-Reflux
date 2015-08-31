@@ -20,14 +20,14 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class MessageProgress implements IMessage, IMessageHandler<MessageProgress, IMessage>
 {
-    public int x, y, z, progress, multiplier, multiplierDuration;
+    public int x, y, z, progress, multiplier, multiplierDuration, powerStored, powerMax;
 
     public MessageProgress()
     {
 
     }
 
-    public MessageProgress(int x, int y, int z, int progress, int multiplier, int multiplierDuration)
+    public MessageProgress(int x, int y, int z, int progress, int multiplier, int multiplierDuration, int powerStored, int powerMax)
     {
         this.x = x;
         this.y = y;
@@ -35,6 +35,8 @@ public class MessageProgress implements IMessage, IMessageHandler<MessageProgres
         this.progress = progress;
         this.multiplier = multiplier;
         this.multiplierDuration = multiplierDuration;
+        this.powerStored = powerStored;
+        this.powerMax = powerMax;
     }
 
     @Override
@@ -46,6 +48,8 @@ public class MessageProgress implements IMessage, IMessageHandler<MessageProgres
         progress = buf.readInt();
         multiplier = buf.readInt();
         multiplierDuration = buf.readInt();
+        powerStored = buf.readInt();
+        powerMax = buf.readInt();
     }
 
     @Override
@@ -57,6 +61,8 @@ public class MessageProgress implements IMessage, IMessageHandler<MessageProgres
         buf.writeInt(progress);
         buf.writeInt(multiplier);
         buf.writeInt(multiplierDuration);
+        buf.writeInt(powerStored);
+        buf.writeInt(powerMax);
     }
 
     @Override
@@ -70,6 +76,8 @@ public class MessageProgress implements IMessage, IMessageHandler<MessageProgres
             ((TileEntityFluxCrystallizationChamber) tileEntity).setProgress(message.progress);
             ((TileEntityFluxCrystallizationChamber) tileEntity).setMultiplier(message.multiplier);
             ((TileEntityFluxCrystallizationChamber) tileEntity).setMultiplierDuration(message.multiplierDuration);
+            ((TileEntityFluxCrystallizationChamber) tileEntity).setPowerStored(message.powerStored);
+            ((TileEntityFluxCrystallizationChamber) tileEntity).setMaxPowerStored(message.powerMax);
         }
 
         return null;

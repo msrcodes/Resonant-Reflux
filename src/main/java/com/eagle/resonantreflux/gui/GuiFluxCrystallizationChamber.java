@@ -34,6 +34,7 @@ public class GuiFluxCrystallizationChamber extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y)
     {
+        drawGuiPowerBar();
         fontRendererObj.drawString("Crystallization Chamber", 8, 6, 4210752);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
         fontRendererObj.drawString("§eProgress: " + Integer.toString(getProgressAsPercentage()) + "%", 30, 25, 4210752);
@@ -58,4 +59,18 @@ public class GuiFluxCrystallizationChamber extends GuiContainer
         int y2 = (height - ySize) / 2;
         this.drawTexturedModalRect(x2, y2, 0, 0, xSize, ySize);
     }
+
+    private void drawGuiPowerBar()
+    {
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.renderEngine.bindTexture(Dictionary.GUI_CRYSTALCHAMBER);
+        int x2 = 0;
+        int y2 = 0;
+        int powerStored = tileEntity.getPowerStored();
+        int maxPowerStored = tileEntity.getMaxPowerStored();
+        float powerPercentage = (float) powerStored / maxPowerStored;
+        float barHeight = powerPercentage * 40;
+        drawTexturedModalRect(x2 + 10, y2 + 63 - Math.round(barHeight), 176, 16, 12, Math.round(barHeight));
+    }
+
 }

@@ -58,7 +58,7 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
 
             if (worldObj.getWorldTime() % 20 == 0 || multiplierDuration > 0)
             {
-                PacketHandler.INSTANCE.sendToAllAround(new MessageProgress(xCoord, yCoord, zCoord, progress, multiplier, multiplierDuration), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 64));
+                PacketHandler.INSTANCE.sendToAllAround(new MessageProgress(xCoord, yCoord, zCoord, progress, multiplier, multiplierDuration, storage.getEnergyStored(), storage.getMaxEnergyStored()), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 64));
             }
         }
         else if (progress >= 40000000 && canFunction())
@@ -199,6 +199,26 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     public void setMultiplierDuration(int multiplierDuration)
     {
         this.multiplierDuration = multiplierDuration;
+    }
+
+    public int getPowerStored()
+    {
+        return this.storage.getEnergyStored();
+    }
+
+    public void setPowerStored(int powerStored)
+    {
+        this.storage.setEnergyStored(powerStored);
+    }
+
+    public int getMaxPowerStored()
+    {
+        return this.storage.getMaxEnergyStored();
+    }
+
+    public void setMaxPowerStored(int maxPowerStored)
+    {
+        this.storage.setCapacity(maxPowerStored);
     }
 
     @Override
