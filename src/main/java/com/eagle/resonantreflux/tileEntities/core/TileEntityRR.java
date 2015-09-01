@@ -18,7 +18,6 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class TileEntityRR extends TileEntity implements IEnergyReceiver
 {
-    private static int currentRF = 0;
     protected EnergyStorage storage;
 
     public TileEntityRR(int maxEnergy, int maxReceive)
@@ -32,21 +31,6 @@ public class TileEntityRR extends TileEntity implements IEnergyReceiver
         storage = new EnergyStorage(maxEnergy);
         storage.setMaxReceive(maxReceive);
         storage.setMaxExtract(maxExtract);
-    }
-
-    public static int getCurrentRF()
-    {
-        return currentRF;
-    }
-
-    public static void setCurrentRF(int currentRF)
-    {
-        TileEntityRR.currentRF = currentRF;
-    }
-
-    public void modifyEnergyStored(int energy)
-    {
-        storage.modifyEnergyStored(energy);
     }
 
     @Override
