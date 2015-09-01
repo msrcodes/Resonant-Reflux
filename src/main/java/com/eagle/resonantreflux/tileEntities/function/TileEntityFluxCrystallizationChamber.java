@@ -1,6 +1,6 @@
 package com.eagle.resonantreflux.tileentities.function;
 
-import com.eagle.resonantreflux.networking.MessageProgress;
+import com.eagle.resonantreflux.networking.MessageChamber;
 import com.eagle.resonantreflux.networking.PacketHandler;
 import com.eagle.resonantreflux.registry.ItemRegistry;
 import com.eagle.resonantreflux.tileentities.core.TileEntityRR;
@@ -58,7 +58,7 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
 
             if (worldObj.getWorldTime() % 20 == 0 || multiplierDuration > 0)
             {
-                PacketHandler.INSTANCE.sendToAllAround(new MessageProgress(xCoord, yCoord, zCoord, progress, multiplier, multiplierDuration, storage.getEnergyStored(), storage.getMaxEnergyStored()), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 64));
+                PacketHandler.INSTANCE.sendToAllAround(new MessageChamber(xCoord, yCoord, zCoord, progress, multiplier, multiplierDuration, storage.getEnergyStored(), storage.getMaxEnergyStored()), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 64));
             }
         }
         else if (progress >= 40000000 && canFunction())

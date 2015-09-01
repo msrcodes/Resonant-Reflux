@@ -18,16 +18,16 @@ import net.minecraft.tileentity.TileEntity;
  * <p/>
  * File created @ 26/07/2015, 13:10 GMT.
  */
-public class MessageProgress implements IMessage, IMessageHandler<MessageProgress, IMessage>
+public class MessageChamber implements IMessage, IMessageHandler<MessageChamber, IMessage>
 {
     public int x, y, z, progress, multiplier, multiplierDuration, powerStored, powerMax;
 
-    public MessageProgress()
+    public MessageChamber()
     {
 
     }
 
-    public MessageProgress(int x, int y, int z, int progress, int multiplier, int multiplierDuration, int powerStored, int powerMax)
+    public MessageChamber(int x, int y, int z, int progress, int multiplier, int multiplierDuration, int powerStored, int powerMax)
     {
         this.x = x;
         this.y = y;
@@ -66,7 +66,7 @@ public class MessageProgress implements IMessage, IMessageHandler<MessageProgres
     }
 
     @Override
-    public IMessage onMessage(MessageProgress message, MessageContext ctx)
+    public IMessage onMessage(MessageChamber message, MessageContext ctx)
     {
         TileEntity tileEntity =
                 FMLClientHandler.instance().getClient().theWorld.getTileEntity(message.x, message.y, message.z);
