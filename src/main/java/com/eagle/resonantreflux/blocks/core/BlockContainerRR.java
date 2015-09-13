@@ -1,13 +1,20 @@
 package com.eagle.resonantreflux.blocks.core;
 
 import com.eagle.resonantreflux.Dictionary;
+import com.eagle.resonantreflux.tileentities.function.TileEntityFluxCrystallizationChamber;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * This class was created by GustoniaEagle.
@@ -59,32 +66,102 @@ public abstract class BlockContainerRR extends BlockContainer
     }
 
     @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
+    {
+        world.setBlockMetadataWithNotify(x, y, z, get2dOrientation(entity).getOpposite().ordinal(), 3);
+    }
+
+    private static ForgeDirection get2dOrientation(EntityLivingBase entity)
+    {
+        ForgeDirection[] orientationTable = {ForgeDirection.SOUTH,
+                ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST};
+        int orientationIndex = MathHelper.floor_double((entity.rotationYaw + 45.0) / 90.0) & 3;
+        return orientationTable[orientationIndex];
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
+    {
+        int meta = world.getBlockMetadata(x, y, z);
+        if (meta == 0 && side == 3)
+            return this.frontOff;
+
+        if (side == meta && meta > 1)
+        {
+            TileEntityFluxCrystallizationChamber chamber = (TileEntityFluxCrystallizationChamber) world.getTileEntity(x, y, z);
+            if (chamber.getPowerStored() >= 2000)
+            {
+                return this.frontOn;
+            }
+            return this.frontOff;
+        }
+
+        if (side == ForgeDirection.getOrientation(meta).getOpposite().ordinal())
+            return back;
+
+        switch (side)
+        {
+            case 0:
+                return bottom;
+            case 1:
+                return top;
+            case 2:
+                if (ForgeDirection.getOrientation(meta) == ForgeDirection.WEST)
+                    return right;
+                return left;
+            case 3:
+                if (ForgeDirection.getOrientation(meta) == ForgeDirection.WEST)
+                    return left;
+                return right;
+            case 4:
+                if (ForgeDirection.getOrientation(meta) == ForgeDirection.SOUTH)
+                    return right;
+                return left;
+            case 5:
+                if (ForgeDirection.getOrientation(meta) == ForgeDirection.SOUTH)
+                    return left;
+                return right;
+        }
+        return null;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-        if (multitexture)
+        if (meta == 0 && side == 3)
+            return this.frontOff;
+
+        if (side == meta && meta > 1)
         {
-            switch (side)
-            {
-                case 0:
-                    return this.bottom;
-                case 1:
-                    return this.top;
-                case 2:
-                    return this.back;
-                case 3:
-                    return this.frontOn;
-                case 4:
-                    return this.right;
-                case 5:
-                    return this.left;
-                default:
-                    return this.bottom;
-            }
+            return this.frontOff;
         }
-        else
+
+        switch (side)
         {
-            return this.blockIcon;
+            case 0:
+                return bottom;
+            case 1:
+                return top;
+            case 2:
+                if (ForgeDirection.getOrientation(meta) == ForgeDirection.WEST)
+                    return right;
+                return left;
+            case 3:
+                if (ForgeDirection.getOrientation(meta) == ForgeDirection.WEST)
+                    return left;
+                return right;
+            case 4:
+                if (ForgeDirection.getOrientation(meta) == ForgeDirection.SOUTH)
+                    return right;
+                return left;
+            case 5:
+                if (ForgeDirection.getOrientation(meta) == ForgeDirection.SOUTH)
+                    return left;
+                return right;
         }
+        return null;
     }
 
 }

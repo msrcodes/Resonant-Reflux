@@ -36,6 +36,8 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     @Override
     public void updateEntity()
     {
+        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+
         if (worldObj.isRemote)
         {
             return;
