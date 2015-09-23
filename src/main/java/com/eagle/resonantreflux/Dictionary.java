@@ -18,14 +18,18 @@ public class Dictionary
     public static final String VERSION = "1.0.0";
 
     public static final String UNLOCALIZED_CRYSTALCHAMBER = "fluxCrystalChamber";
+    public static final String UNLOCALIZED_RECYCLER = "recycler";
     public static final String UNLOCALIZED_FLUXCRYSTAL = "fluxCrystal";
     public static final String UNLOCALIZED_SCRAP = "scrap";
     public static final String UNLOCALIZED_SCRAPBAG = "scrapBag";
     public static final ResourceLocation GUI_CRYSTALCHAMBER =
             new ResourceLocation(MOD_ID.toLowerCase(), "textures/gui/fluxCrystalChamber.png");
+    public static final ResourceLocation GUI_RECYCLER =
+            new ResourceLocation(MOD_ID.toLowerCase(), "textures/gui/recycler.png");
 
     public enum Gui
     {
-        CRYSTAL_CHAMBER
+        CRYSTAL_CHAMBER,
+        RECYCLER
     }
 }

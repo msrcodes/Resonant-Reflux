@@ -1,5 +1,6 @@
 #Blocks
 tile.fluxCrystalChamber.name=§3Flux Crystallization Chamber
+tile.recycler.name=§3Recycler
 
 #Items
 item.fluxCrystal.name=§3Crystallized Flux

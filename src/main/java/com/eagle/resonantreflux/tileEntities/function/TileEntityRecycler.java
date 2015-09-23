@@ -1,10 +1,7 @@
 package com.eagle.resonantreflux.tileentities.function;
 
-import com.eagle.resonantreflux.networking.MessageChamber;
-import com.eagle.resonantreflux.networking.PacketHandler;
 import com.eagle.resonantreflux.registry.ItemRegistry;
 import com.eagle.resonantreflux.tileentities.core.TileEntityRR;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -14,118 +11,27 @@ import net.minecraft.nbt.NBTTagList;
 /**
  * This class was created by GustoniaEagle.
  * It is distributed under a part of the Resonant Reflux mod.
- * https://github.com/GustoniaEagle/
- * <p/>
- * Resonant Reflux is open source, and available under the
+ * <p>
+ * Forge is open source, and available under the
  * GNU General Public License Version 2.
- * <p/>
- * File created @ 24/07/2015, 19:45 GMT.
+ * <p>
+ * File created @ 23/09/2015, 5:33 PM GMT.
  */
-public class TileEntityFluxCrystallizationChamber extends TileEntityRR implements ISidedInventory
+public class TileEntityRecycler extends TileEntityRR implements ISidedInventory
 {
     private ItemStack[] inv = new ItemStack[2];
-    private int progress, multiplier, multiplierDuration;
+    private int progress;
 
-    public TileEntityFluxCrystallizationChamber()
+    public TileEntityRecycler()
     {
-        super(60000, 800);
+        super(40000000, 32000);
         progress = 0;
-        multiplier = 1;
     }
 
     @Override
     public void updateEntity()
     {
         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-
-        if (worldObj.isRemote)
-        {
-            return;
-        }
-
-        if (progress < 40000000 && canFunction())
-        {
-            storage.modifyEnergyStored(-2000);
-            progress += 2000 * multiplier;
-
-            if (multiplier > 1 && multiplierDuration > 0)
-            {
-                multiplierDuration--;
-            }
-            else
-            {
-                setMultiplier(1);
-                consumeMultiplier();
-            }
-
-            if (worldObj.getWorldTime() % 20 == 0 || multiplierDuration > 0)
-            {
-                PacketHandler.INSTANCE.sendToAllAround(new MessageChamber(xCoord, yCoord, zCoord, progress, multiplier, multiplierDuration, storage.getEnergyStored(), storage.getMaxEnergyStored()), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 64));
-            }
-        }
-        else if (progress >= 40000000 && canFunction())
-        {
-            if (getStackInSlot(1) == null)
-            {
-                setInventorySlotContents(1, new ItemStack(ItemRegistry.fluxCrystal).copy());
-                progress = 0;
-            }
-            else
-            {
-                getStackInSlot(1).stackSize++;
-                progress = 0;
-            }
-        }
-
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-
-    private boolean canFunction()
-    {
-        return storage.getEnergyStored() >= 2000 &&
-                (getStackInSlot(1) == null || getStackInSlot(1).stackSize < getInventoryStackLimit());
-    }
-
-    private void calculateMultiplier()
-    {
-        if (this.getStackInSlot(0) == null)
-        {
-            setMultiplier(1);
-            setMultiplierDuration(0);
-        }
-        if (this.getStackInSlot(0).getItem() == ItemRegistry.scrap)
-        {
-            setMultiplier(2);
-            setMultiplierDuration(20);
-        }
-        else if (this.getStackInSlot(0).getItem() == ItemRegistry.scrapBag)
-        {
-            setMultiplier(18);
-            setMultiplierDuration(20);
-        }
-    }
-
-    private void consumeMultiplier()
-    {
-        if (this.getStackInSlot(0) == null)
-        {
-            return;
-        }
-
-        if (multiplierDuration == 0)
-        {
-            calculateMultiplier();
-
-            if (this.getStackInSlot(0).stackSize >= 2)
-            {
-                this.getStackInSlot(0).stackSize--;
-            }
-            else if (this.getStackInSlot(0).stackSize == 1)
-            {
-                this.setInventorySlotContents(0, null);
-            }
-        }
-
     }
 
     @Override
@@ -133,8 +39,6 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     {
         super.readFromNBT(tagCompound);
         progress = tagCompound.getInteger("Progress");
-        multiplier = tagCompound.getInteger("Multiplier");
-        multiplierDuration = tagCompound.getInteger("Multiplier_Duration");
         NBTTagList nbttaglist = tagCompound.getTagList("Items", 10);
         this.inv = new ItemStack[this.getSizeInventory()];
 
@@ -155,8 +59,6 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     {
         super.writeToNBT(tagCompound);
         tagCompound.setInteger("Progress", progress);
-        tagCompound.setInteger("Multiplier", multiplier);
-        tagCompound.setInteger("Multiplier_Duration", multiplierDuration);
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.inv.length; ++i)
@@ -181,26 +83,6 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
     public void setProgress(int progress)
     {
         this.progress = progress;
-    }
-
-    public int getMultiplier()
-    {
-        return multiplier;
-    }
-
-    public void setMultiplier(int multiplier)
-    {
-        this.multiplier = multiplier;
-    }
-
-    public int getMultiplierDuration()
-    {
-        return multiplierDuration;
-    }
-
-    public void setMultiplierDuration(int multiplierDuration)
-    {
-        this.multiplierDuration = multiplierDuration;
     }
 
     public int getPowerStored()
@@ -366,4 +248,3 @@ public class TileEntityFluxCrystallizationChamber extends TileEntityRR implement
         return slot == 1;
     }
 }
-
