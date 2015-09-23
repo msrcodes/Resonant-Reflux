@@ -1,7 +1,7 @@
 package com.eagle.resonantreflux.blocks.core;
 
+import cofh.api.energy.IEnergyReceiver;
 import com.eagle.resonantreflux.Dictionary;
-import com.eagle.resonantreflux.tileentities.function.TileEntityFluxCrystallizationChamber;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
@@ -89,8 +89,8 @@ public abstract class BlockContainerRR extends BlockContainer
 
         if (side == meta && meta > 1)
         {
-            TileEntityFluxCrystallizationChamber chamber = (TileEntityFluxCrystallizationChamber) world.getTileEntity(x, y, z);
-            if (chamber.getPowerStored() >= 2000)
+            IEnergyReceiver tileEntity = (IEnergyReceiver) world.getTileEntity(x, y, z);
+            if (tileEntity.getEnergyStored(ForgeDirection.UNKNOWN) >= 2000)
             {
                 return this.frontOn;
             }
